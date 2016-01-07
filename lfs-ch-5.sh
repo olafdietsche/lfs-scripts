@@ -285,3 +285,231 @@ package
 install
 clean
 post_build
+
+# Section 5.11. Tcl-core-8.6.4 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/tcl.html
+
+src_archive=sources/tcl-core8.6.4-src.tar.gz
+source ${bindir}/build.sh
+dist_archive=tcl-core-8.6.4.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/unix/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    TC=UTC make -C ${builddir} test
+}
+
+pre_package()
+{
+    make -C ${builddir} DESTDIR=${destdir} install-private-headers
+    mkdir -p ${destdir}/${prefix}/bin
+    ln -s tclsh8.6 ${destdir}/${prefix}/bin/tclsh
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.12. Expect-5.45 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/expect.html
+
+src_archive=sources/expect5.45.tar.gz
+source ${bindir}/build.sh
+dist_archive=expect-5.45.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix} \
+        --with-tcl=${prefix}/lib \
+        --with-tclinclude=${prefix}/include
+}
+
+package()
+{
+    if test $(uname -m) = x86_64 -a ! -L ${destdir}/${prefix}/lib64; then
+        mkdir -p ${destdir}/${prefix}
+        ln -s lib ${destdir}/${prefix}/lib64
+    fi
+
+    make -C ${builddir} DESTDIR=${destdir} SCRIPTS="" install
+    mkdir -p ${distdir}
+    tar -C ${destdir} -caf ${distdir}/${dist_archive} ./${prefix/#\//}
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.13. DejaGNU-1.5.3 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/dejagnu.html
+
+src_archive=sources/dejagnu-1.5.3.tar.gz
+source ${bindir}/build.sh
+dist_archive=dejagnu-1.5.3.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.14 Check-0.10.0 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/check.html
+
+src_archive=sources/check-0.10.0.tar.gz
+source ${bindir}/build.sh
+dist_archive=check-0.10.0.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    PKG_CONFIG= ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.15. Ncurses-6.0 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/ncurses.html
+
+src_archive=sources/ncurses-6.0.tar.gz
+source ${bindir}/build.sh
+dist_archive=ncurses-6.0.tar.xz
+
+pre_configure()
+{
+    sed -i s/mawk// ${srcdir}/configure
+}
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix} \
+        --with-shared   \
+        --without-debug \
+        --without-ada   \
+        --enable-widec  \
+        --enable-overwrite
+}
+
+test_build()
+{
+    make -C ${builddir}/test
+}
+
+unpack
+pre_configure
+configure
+compile
+package
+install
+test_build
+clean
+
+# Section 5.16. Bash-4.3.30 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/bash.html
+
+src_archive=sources/bash-4.3.30.tar.gz
+source ${bindir}/build.sh
+dist_archive=bash-4.3.30.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix} \
+        --without-bash-malloc
+}
+
+test_build()
+{
+    make -C ${builddir} tests
+}
+
+pre_package()
+{
+    mkdir -p ${destdir}/${prefix}/bin
+    ln -s bash ${destdir}/${prefix}/bin/sh
+}
+
+unpack
+configure
+compile
+test_build
+pre_package
+package
+install
+clean
+
+# Section 5.17. Bzip2-1.0.6 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/bzip2.html
+
+src_archive=sources/bzip2-1.0.6.tar.gz
+source ${bindir}/build.sh
+dist_archive=bzip2-1.0.6.tar.xz
+builddir=${srcdir}
+
+pre_package()
+{
+    sed -i -e '/ln -s -f/s,\$(PREFIX)/bin/,,' ${srcdir}/Makefile
+}
+
+package()
+{
+	if test $(uname -m) = x86_64 -a ! -L ${destdir}/${prefix}/lib64; then
+        mkdir -p ${destdir}/${prefix}
+        ln -s lib ${destdir}/${prefix}/lib64
+    fi
+
+	make -C ${builddir} PREFIX=${destdir}/${prefix} install
+	mkdir -p ${distdir}
+	tar -C ${destdir} -caf ${distdir}/${dist_archive} ./${prefix/#\//}
+}
+
+unpack
+compile
+pre_package
+package
+install
+clean
