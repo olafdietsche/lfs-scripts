@@ -69,14 +69,14 @@ test_build()
 
 package()
 {
-	if test $(uname -m) = x86_64 -a ! -L ${destdir}/${prefix}/lib64; then
-        mkdir -p ${destdir}/${prefix}
-        ln -s lib ${destdir}/${prefix}/lib64
+	if test $(uname -m) = x86_64 -a ! -L ${destdir}${prefix}/lib64; then
+        mkdir -p ${destdir}${prefix}
+        ln -s lib ${destdir}${prefix}/lib64
     fi
 
 	make -C ${builddir} DESTDIR=${destdir} install
 	mkdir -p ${distdir}
-	tar -C ${destdir} -caf ${distdir}/${dist_archive} ./${prefix/#\//}
+	tar -C ${destdir} -caf ${distdir}/${dist_archive} .${prefix}
 }
 
 install()

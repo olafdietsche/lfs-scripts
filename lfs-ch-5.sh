@@ -97,9 +97,9 @@ pre_configure()
 
 package()
 {
-    make -C ${srcdir} INSTALL_HDR_PATH=${destdir}/${prefix} headers_install
+    make -C ${srcdir} INSTALL_HDR_PATH=${destdir}${prefix} headers_install
     mkdir -p ${distdir}
-    tar -C ${destdir} -caf ${distdir}/${dist_archive} ./${prefix/#\//}
+    tar -C ${destdir} -caf ${distdir}/${dist_archive} .${prefix}
 }
 
 unpack
@@ -201,8 +201,8 @@ post_package()
 {
     make -C ${builddir}/ld clean
     make -C ${builddir}/ld LIB_PATH=/usr/lib:/lib
-    cp ${builddir}/ld/ld-new ${destdir}/${prefix}/bin
-    tar -C ${destdir} -caf ${distdir}/${dist_archive} ./${prefix/#\//}
+    cp ${builddir}/ld/ld-new ${destdir}${prefix}/bin
+    tar -C ${destdir} -caf ${distdir}/${dist_archive} .${prefix}
 }
 
 unpack
@@ -308,8 +308,8 @@ test_build()
 pre_package()
 {
     make -C ${builddir} DESTDIR=${destdir} install-private-headers
-    mkdir -p ${destdir}/${prefix}/bin
-    ln -s tclsh8.6 ${destdir}/${prefix}/bin/tclsh
+    mkdir -p ${destdir}${prefix}/bin
+    ln -s tclsh8.6 ${destdir}${prefix}/bin/tclsh
 }
 
 unpack
@@ -338,14 +338,14 @@ configure()
 
 package()
 {
-    if test $(uname -m) = x86_64 -a ! -L ${destdir}/${prefix}/lib64; then
-        mkdir -p ${destdir}/${prefix}
-        ln -s lib ${destdir}/${prefix}/lib64
+    if test $(uname -m) = x86_64 -a ! -L ${destdir}${prefix}/lib64; then
+        mkdir -p ${destdir}${prefix}
+        ln -s lib ${destdir}${prefix}/lib64
     fi
 
     make -C ${builddir} DESTDIR=${destdir} SCRIPTS="" install
     mkdir -p ${distdir}
-    tar -C ${destdir} -caf ${distdir}/${dist_archive} ./${prefix/#\//}
+    tar -C ${destdir} -caf ${distdir}/${dist_archive} .${prefix}
 }
 
 unpack
@@ -470,8 +470,8 @@ test_build()
 
 pre_package()
 {
-    mkdir -p ${destdir}/${prefix}/bin
-    ln -s bash ${destdir}/${prefix}/bin/sh
+    mkdir -p ${destdir}${prefix}/bin
+    ln -s bash ${destdir}${prefix}/bin/sh
 }
 
 unpack
@@ -497,14 +497,14 @@ pre_package()
 
 package()
 {
-	if test $(uname -m) = x86_64 -a ! -L ${destdir}/${prefix}/lib64; then
-        mkdir -p ${destdir}/${prefix}
-        ln -s lib ${destdir}/${prefix}/lib64
+	if test $(uname -m) = x86_64 -a ! -L ${destdir}${prefix}/lib64; then
+        mkdir -p ${destdir}${prefix}
+        ln -s lib ${destdir}${prefix}/lib64
     fi
 
-	make -C ${builddir} PREFIX=${destdir}/${prefix} install
+	make -C ${builddir} PREFIX=${destdir}${prefix} install
 	mkdir -p ${distdir}
-	tar -C ${destdir} -caf ${distdir}/${dist_archive} ./${prefix/#\//}
+	tar -C ${destdir} -caf ${distdir}/${dist_archive} .${prefix}
 }
 
 unpack
