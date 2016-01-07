@@ -22,6 +22,7 @@ all()
     pre_configure
     configure
     compile
+    test_build
     package
     install
     clean
@@ -59,6 +60,11 @@ configure()
 compile()
 {
 	make -C ${builddir}
+}
+
+test_build()
+{
+    make -C ${builddir} test
 }
 
 package()
