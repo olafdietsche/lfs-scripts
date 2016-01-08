@@ -513,3 +513,142 @@ pre_package
 package
 install
 clean
+
+# Section 5.18. Coreutils-8.24 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/coreutils.html
+
+src_archive=sources/coreutils-8.24.tar.xz
+source ${bindir}/build.sh
+dist_archive=coreutils-8.24.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix} \
+        --enable-install-program=hostname
+}
+
+test_build()
+{
+    make -C ${builddir} RUN_EXPENSIVE_TESTS=yes check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.19. Diffutils-3.3 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/diffutils.html
+
+src_archive=sources/diffutils-3.3.tar.xz
+source ${bindir}/build.sh
+dist_archive=diffutils-3.3.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.20. File-5.24 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/file.html
+
+src_archive=sources/file-5.24.tar.gz
+source ${bindir}/build.sh
+dist_archive=file-5.24.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.21. Findutils-4.4.2 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/findutils.html
+
+src_archive=sources/findutils-4.4.2.tar.gz
+source ${bindir}/build.sh
+dist_archive=findutils-4.4.2.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.22. Gawk-4.1.3 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/gawk.html
+
+src_archive=sources/gawk-4.1.3.tar.xz
+source ${bindir}/build.sh
+dist_archive=gawk-4.1.3.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    # make sure, test doesn't block in case of failure
+    #sed -i 's/| *more//' ${builddir}/test/Makefile
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
