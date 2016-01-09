@@ -652,3 +652,209 @@ package
 install
 clean
 
+# Section 5.23. Gettext-0.19.5.1 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/gettext.html
+
+src_archive=sources/gettext-0.19.5.1.tar.xz
+source ${bindir}/build.sh
+dist_archive=gettext-0.19.5.1.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}/gettext-tools
+    cd ${builddir}/gettext-tools
+    EMACS=no ${srcdir}/gettext-tools/configure \
+        --prefix=${prefix} \
+        --disable-shared
+}
+
+compile()
+{
+    make -C ${builddir}/gettext-tools/gnulib-lib
+    make -C ${builddir}/gettext-tools/intl pluralx.c
+    make -C ${builddir}/gettext-tools/src msgfmt msgmerge xgettext
+}
+
+package ()
+{
+    mkdir -p ${destdir}${prefix}/bin
+    cp ${builddir}/gettext-tools/src/{msgfmt,msgmerge,xgettext} ${destdir}${prefix}/bin
+    mkdir -p ${distdir}
+    tar -C ${destdir} -caf ${distdir}/${dist_archive} .${prefix}
+}
+
+unpack
+configure
+compile
+package
+install
+clean
+
+# Section 5.24. Grep-2.21 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/grep.html
+
+src_archive=sources/grep-2.21.tar.xz
+source ${bindir}/build.sh
+dist_archive=grep-2.21.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.25. Gzip-1.6 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/gzip.html
+
+src_archive=sources/gzip-1.6.tar.xz
+source ${bindir}/build.sh
+dist_archive=gzip-1.6.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.26. M4-1.4.17 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/m4.html
+
+src_archive=sources/m4-1.4.17.tar.xz
+source ${bindir}/build.sh
+dist_archive=m4-1.4.17.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.27. Make-4.1 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/make.html
+
+src_archive=sources/make-4.1.tar.bz2
+source ${bindir}/build.sh
+dist_archive=make-4.1.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix} \
+        --without-guile
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.28. Patch-2.7.5 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/patch.html
+
+src_archive=sources/patch-2.7.5.tar.xz
+source ${bindir}/build.sh
+dist_archive=patch-2.7.5.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.29. Perl-5.22.0 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/perl.html
+
+src_archive=sources/perl-5.22.0.tar.bz2
+source ${bindir}/build.sh
+dist_archive=perl-5.22.0.tar.xz
+builddir=${srcdir}
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    sh ${srcdir}/Configure \
+        -des \
+        -Dprefix=${prefix} \
+        -Dlibs=-lm
+}
+
+package()
+{
+    mkdir -p ${destdir}${prefix}/bin ${destdir}${prefix}/lib/perl5/5.22.0
+    cp ${builddir}/perl ${builddir}/cpan/podlators/pod2man ${destdir}${prefix}/bin
+    cp -R ${builddir}/lib/* ${destdir}${prefix}/lib/perl5/5.22.0
+
+    mkdir -p ${distdir}
+    tar -C ${destdir} -caf ${distdir}/${dist_archive} .${prefix}
+}
+
+unpack
+configure
+compile
+package
+install
+clean
