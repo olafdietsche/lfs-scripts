@@ -858,3 +858,136 @@ compile
 package
 install
 clean
+
+# Section 5.30. Sed-4.2.2 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/sed.html
+
+src_archive=sources/sed-4.2.2.tar.bz2
+source ${bindir}/build.sh
+dist_archive=sed-4.2.2.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.31. Tar-1.28 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/tar.html
+
+src_archive=sources/tar-1.28.tar.xz
+source ${bindir}/build.sh
+dist_archive=tar-1.28.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.32. Texinfo-6.0 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/texinfo.html
+
+src_archive=sources/texinfo-6.0.tar.xz
+source ${bindir}/build.sh
+dist_archive=texinfo-6.0.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
+
+# Section 5.33. Util-linux-2.27 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/util-linux.html
+
+src_archive=sources/util-linux-2.27.tar.xz
+source ${bindir}/build.sh
+dist_archive=util-linux-2.27.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix} \
+        --without-python \
+        --disable-makeinstall-chown \
+        --without-systemdsystemunitdir \
+        PKG_CONFIG=""
+}
+
+unpack
+configure
+compile
+package
+install
+clean
+
+# Section 5.34. Xz-5.2.1 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/xz.html
+
+src_archive=sources/xz-5.2.1.tar.xz
+source ${bindir}/build.sh
+dist_archive=xz-5.2.1.tar.xz
+
+configure()
+{
+    mkdir -p ${builddir}
+    cd ${builddir}
+    ${srcdir}/configure \
+        --prefix=${prefix}
+}
+
+test_build()
+{
+    make -C ${builddir} check
+}
+
+unpack
+configure
+compile
+test_build
+package
+install
+clean
