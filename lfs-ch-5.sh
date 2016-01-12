@@ -370,15 +370,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -397,15 +392,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -463,11 +453,6 @@ configure()
         --without-bash-malloc
 }
 
-test_build()
-{
-    make -C ${builddir} tests
-}
-
 pre_package()
 {
     mkdir -p ${destdir}${prefix}/bin
@@ -477,7 +462,7 @@ pre_package()
 unpack
 configure
 compile
-test_build
+test_build tests
 pre_package
 package
 install
@@ -529,15 +514,10 @@ configure()
         --enable-install-program=hostname
 }
 
-test_build()
-{
-    make -C ${builddir} RUN_EXPENSIVE_TESTS=yes check
-}
-
 unpack
 configure
 compile
-test_build
+test_build RUN_EXPENSIVE_TESTS=yes check
 package
 install
 clean
@@ -556,15 +536,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -583,15 +558,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -610,15 +580,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -637,17 +602,11 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    # make sure, test doesn't block in case of failure
-    #sed -i 's/| *more//' ${builddir}/test/Makefile
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+# FIXME How do I make sure, test doesn't block in case of failure
+test_build check
 package
 install
 clean
@@ -703,15 +662,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -730,15 +684,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -757,15 +706,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -785,15 +729,10 @@ configure()
         --without-guile
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -812,15 +751,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -873,15 +807,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -900,15 +829,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -927,15 +851,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean
@@ -979,15 +898,10 @@ configure()
         --prefix=${prefix}
 }
 
-test_build()
-{
-    make -C ${builddir} check
-}
-
 unpack
 configure
 compile
-test_build
+test_build check
 package
 install
 clean

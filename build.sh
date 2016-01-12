@@ -64,7 +64,7 @@ compile()
 
 test_build()
 {
-    make -C ${builddir} test
+    make -C ${builddir} ${@:-test}
 }
 
 package()
