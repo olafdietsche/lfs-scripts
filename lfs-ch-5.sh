@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 bindir=${HOME}/bin
 
@@ -7,6 +7,13 @@ bindir=${HOME}/bin
 src_archive=sources/binutils-2.25.1.tar.bz2
 source ${bindir}/build.sh
 dist_archive=binutils-2.25.1-pass-1.tar.xz
+configure_options="
+--with-sysroot=${LFS}
+--with-lib-path=${prefix}/lib
+--target=${LFS_TGT}
+--disable-nls
+--disable-werror
+"
 
 unpack
 configure
@@ -48,32 +55,27 @@ pre_configure()
     done
 }
 
-configure()
-{
-	mkdir -p ${builddir}
-	cd ${builddir}
-    ${srcdir}/configure \
-        --target=${LFS_TGT} \
-        --prefix=${prefix} \
-        --with-glibc-version=2.11 \
-        --with-sysroot=${LFS} \
-        --with-newlib \
-        --without-headers \
-        --with-local-prefix=${prefix} \
-        --with-native-system-header-dir=${prefix}/include \
-        --disable-nls \
-        --disable-shared \
-        --disable-multilib \
-        --disable-decimal-float \
-        --disable-threads \
-        --disable-libatomic \
-        --disable-libgomp \
-        --disable-libquadmath \
-        --disable-libssp \
-        --disable-libvtv \
-        --disable-libstdcxx \
-        --enable-languages=c,c++
-}
+configure_options="
+--target=${LFS_TGT}
+--with-glibc-version=2.11
+--with-sysroot=${LFS}
+--with-newlib
+--without-headers
+--with-local-prefix=${prefix}
+--with-native-system-header-dir=${prefix}/include
+--disable-nls
+--disable-shared
+--disable-multilib
+--disable-decimal-float
+--disable-threads
+--disable-libatomic
+--disable-libgomp
+--disable-libquadmath
+--disable-libssp
+--disable-libvtv
+--disable-libstdcxx
+--enable-languages=c,c++
+"
 
 unpack
 post_unpack
@@ -119,18 +121,13 @@ post_unpack()
     patch -d ${srcdir} -Np1 -i ${sourcesdir}/glibc-2.22-upstream_i386_fix-1.patch
 }
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix} \
-        --with-sysroot=${LFS} \
-        --with-lib-path=${prefix}/lib \
-        --target=${LFS_TGT} \
-        --disable-nls \
-        --disable-werror
-}
+configure_options="
+--with-sysroot=${LFS}
+--with-lib-path=${prefix}/lib
+--target=${LFS_TGT}
+--disable-nls
+--disable-werror
+"
 
 post_build()
 {
@@ -155,22 +152,17 @@ src_archive=sources/gcc-5.2.0.tar.bz2
 source ${bindir}/build.sh
 dist_archive=libstdc++-5.2.0.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/libstdc++-v3/configure \
-        --host=${LFS_TGT} \
-        --prefix=${prefix} \
-        --disable-multilib \
-        --disable-nls \
-        --disable-libstdcxx-threads \
-        --disable-libstdcxx-pch \
-        --with-gxx-include-dir=${prefix}/${LFS_TGT}/include/c++/5.2.0
-}
+configure_options="
+--host=${LFS_TGT}
+--disable-multilib
+--disable-nls
+--disable-libstdcxx-threads
+--disable-libstdcxx-pch
+--with-gxx-include-dir=${prefix}/${LFS_TGT}/include/c++/5.2.0
+"
 
 unpack
-configure
+srcdir=${srcdir}/libstdc++-v3 configure
 compile
 package
 install
@@ -292,14 +284,6 @@ src_archive=sources/tcl-core8.6.4-src.tar.gz
 source ${bindir}/build.sh
 dist_archive=tcl-core-8.6.4.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/unix/configure \
-        --prefix=${prefix}
-}
-
 test_build()
 {
     TC=UTC make -C ${builddir} test
@@ -313,7 +297,7 @@ pre_package()
 }
 
 unpack
-configure
+srcdir=${srcdir}/unix configure
 compile
 test_build
 package
@@ -326,15 +310,10 @@ src_archive=sources/expect5.45.tar.gz
 source ${bindir}/build.sh
 dist_archive=expect-5.45.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix} \
-        --with-tcl=${prefix}/lib \
-        --with-tclinclude=${prefix}/include
-}
+configure_options="
+--with-tcl=${prefix}/lib
+--with-tclinclude=${prefix}/include
+"
 
 package()
 {
@@ -362,14 +341,6 @@ src_archive=sources/dejagnu-1.5.3.tar.gz
 source ${bindir}/build.sh
 dist_archive=dejagnu-1.5.3.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
-
 unpack
 configure
 compile
@@ -384,16 +355,8 @@ src_archive=sources/check-0.10.0.tar.gz
 source ${bindir}/build.sh
 dist_archive=check-0.10.0.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    PKG_CONFIG= ${srcdir}/configure \
-        --prefix=${prefix}
-}
-
 unpack
-configure
+PKG_CONFIG= configure
 compile
 test_build check
 package
@@ -411,18 +374,13 @@ pre_configure()
     sed -i s/mawk// ${srcdir}/configure
 }
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix} \
-        --with-shared   \
-        --without-debug \
-        --without-ada   \
-        --enable-widec  \
-        --enable-overwrite
-}
+configure_options="
+--with-shared
+--without-debug
+--without-ada
+--enable-widec
+--enable-overwrite
+"
 
 test_build()
 {
@@ -444,14 +402,7 @@ src_archive=sources/bash-4.3.30.tar.gz
 source ${bindir}/build.sh
 dist_archive=bash-4.3.30.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix} \
-        --without-bash-malloc
-}
+configure_options=--without-bash-malloc
 
 pre_package()
 {
@@ -505,14 +456,7 @@ src_archive=sources/coreutils-8.24.tar.xz
 source ${bindir}/build.sh
 dist_archive=coreutils-8.24.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix} \
-        --enable-install-program=hostname
-}
+configure_options=--enable-install-program=hostname
 
 unpack
 configure
@@ -528,14 +472,6 @@ src_archive=sources/diffutils-3.3.tar.xz
 source ${bindir}/build.sh
 dist_archive=diffutils-3.3.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
-
 unpack
 configure
 compile
@@ -549,14 +485,6 @@ clean
 src_archive=sources/file-5.24.tar.gz
 source ${bindir}/build.sh
 dist_archive=file-5.24.tar.xz
-
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
 
 unpack
 configure
@@ -572,14 +500,6 @@ src_archive=sources/findutils-4.4.2.tar.gz
 source ${bindir}/build.sh
 dist_archive=findutils-4.4.2.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
-
 unpack
 configure
 compile
@@ -593,14 +513,6 @@ clean
 src_archive=sources/gawk-4.1.3.tar.xz
 source ${bindir}/build.sh
 dist_archive=gawk-4.1.3.tar.xz
-
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
 
 unpack
 configure
@@ -633,7 +545,7 @@ compile()
     make -C ${builddir}/gettext-tools/src msgfmt msgmerge xgettext
 }
 
-package ()
+package()
 {
     mkdir -p ${destdir}${prefix}/bin
     cp ${builddir}/gettext-tools/src/{msgfmt,msgmerge,xgettext} ${destdir}${prefix}/bin
@@ -654,14 +566,6 @@ src_archive=sources/grep-2.21.tar.xz
 source ${bindir}/build.sh
 dist_archive=grep-2.21.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
-
 unpack
 configure
 compile
@@ -675,14 +579,6 @@ clean
 src_archive=sources/gzip-1.6.tar.xz
 source ${bindir}/build.sh
 dist_archive=gzip-1.6.tar.xz
-
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
 
 unpack
 configure
@@ -698,14 +594,6 @@ src_archive=sources/m4-1.4.17.tar.xz
 source ${bindir}/build.sh
 dist_archive=m4-1.4.17.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
-
 unpack
 configure
 compile
@@ -720,14 +608,7 @@ src_archive=sources/make-4.1.tar.bz2
 source ${bindir}/build.sh
 dist_archive=make-4.1.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix} \
-        --without-guile
-}
+configure_options=--without-guile
 
 unpack
 configure
@@ -742,14 +623,6 @@ clean
 src_archive=sources/patch-2.7.5.tar.xz
 source ${bindir}/build.sh
 dist_archive=patch-2.7.5.tar.xz
-
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
 
 unpack
 configure
@@ -799,14 +672,6 @@ src_archive=sources/sed-4.2.2.tar.bz2
 source ${bindir}/build.sh
 dist_archive=sed-4.2.2.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
-
 unpack
 configure
 compile
@@ -820,14 +685,6 @@ clean
 src_archive=sources/tar-1.28.tar.xz
 source ${bindir}/build.sh
 dist_archive=tar-1.28.tar.xz
-
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
 
 unpack
 configure
@@ -843,14 +700,6 @@ src_archive=sources/texinfo-6.0.tar.xz
 source ${bindir}/build.sh
 dist_archive=texinfo-6.0.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
-
 unpack
 configure
 compile
@@ -865,17 +714,12 @@ src_archive=sources/util-linux-2.27.tar.xz
 source ${bindir}/build.sh
 dist_archive=util-linux-2.27.tar.xz
 
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix} \
-        --without-python \
-        --disable-makeinstall-chown \
-        --without-systemdsystemunitdir \
-        PKG_CONFIG=""
-}
+configure_options='
+--without-python
+--disable-makeinstall-chown
+--without-systemdsystemunitdir
+PKG_CONFIG=""
+'
 
 unpack
 configure
@@ -889,14 +733,6 @@ clean
 src_archive=sources/xz-5.2.1.tar.xz
 source ${bindir}/build.sh
 dist_archive=xz-5.2.1.tar.xz
-
-configure()
-{
-    mkdir -p ${builddir}
-    cd ${builddir}
-    ${srcdir}/configure \
-        --prefix=${prefix}
-}
 
 unpack
 configure

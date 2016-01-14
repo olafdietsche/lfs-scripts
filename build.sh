@@ -18,8 +18,6 @@ usage()
 all()
 {
     unpack
-    post_unpack
-    pre_configure
     configure
     compile
     test_build
@@ -34,27 +32,13 @@ unpack()
 	tar -C ${srcdir} --strip-components=1 --keep-old-files --skip-old-files -xf ${src_archive}
 }
 
-post_unpack()
-{
-    :
-}
-
-pre_configure()
-{
-    :
-}
-
 configure()
 {
 	mkdir -p ${builddir}
 	cd ${builddir}
 	${srcdir}/configure \
 		--prefix=${prefix} \
-		--with-sysroot=${LFS} \
-		--with-lib-path=${prefix}/lib \
-		--target=${LFS_TGT} \
-		--disable-nls \
-		--disable-werror
+		${configure_options}
 }
 
 compile()
