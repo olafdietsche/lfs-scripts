@@ -300,6 +300,7 @@ unpack
 srcdir=${srcdir}/unix configure
 compile
 test_build
+pre_package
 package
 install
 clean
