@@ -28,7 +28,7 @@ src_archive=sources/gcc-5.2.0.tar.bz2
 source ${bindir}/build.sh
 dist_archive=gcc-5.2.0-pass-1.tar.xz
 
-post_unpack()
+post_unpack_gcc_pass1()
 {
     tar -C ${srcdir} -xf ${sourcesdir}/mpfr-3.1.3.tar.xz
     mv ${srcdir}/mpfr-3.1.3 ${srcdir}/mpfr
@@ -38,7 +38,7 @@ post_unpack()
     mv ${srcdir}/mpc-1.0.3 ${srcdir}/mpc
 }
 
-pre_configure()
+pre_configure_gcc_pass1()
 {
     cd ${srcdir}
 
@@ -78,8 +78,8 @@ configure_options="
 "
 
 unpack
-post_unpack
-pre_configure
+post_unpack_gcc_pass1
+pre_configure_gcc_pass1
 configure
 compile
 package
@@ -92,12 +92,12 @@ src_archive=sources/linux-4.2.8.tar.xz
 source ${bindir}/build.sh
 dist_archive=linux-headers-4.2.8.tar.xz
 
-pre_configure()
+pre_configure_linux_headers()
 {
     make -C ${srcdir} mrproper
 }
 
-package()
+package_linux_headers()
 {
     make -C ${srcdir} INSTALL_HDR_PATH=${destdir}${prefix} headers_install
     mkdir -p ${distdir}
@@ -105,8 +105,8 @@ package()
 }
 
 unpack
-pre_configure
-package
+pre_configure_linux_headers
+package_linux_headers
 install
 clean
 
@@ -116,7 +116,7 @@ src_archive=sources/glibc-2.22.tar.xz
 source ${bindir}/build.sh
 dist_archive=glibc-2.22.tar.xz
 
-post_unpack()
+post_unpack_glibc()
 {
     patch -d ${srcdir} -Np1 -i ${sourcesdir}/glibc-2.22-upstream_i386_fix-1.patch
 }
@@ -129,7 +129,7 @@ configure_options="
 --disable-werror
 "
 
-post_build()
+post_build_glibc()
 {
     echo 'int main(){}' > dummy.c
     ${LFS_TGT}-gcc dummy.c
@@ -138,13 +138,13 @@ post_build()
 }
 
 unpack
-post_unpack
+post_unpack_glibc
 configure
 compile
 package
 install
 clean
-post_build
+post_build_glibc
 
 # Section 5.8. Libstdc++-5.2.0 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/gcc-libstdc++.html
 
@@ -174,7 +174,7 @@ src_archive=sources/binutils-2.25.1.tar.bz2
 source ${bindir}/build.sh
 dist_archive=binutils-2.25.1-pass-2.tar.xz
 
-configure()
+configure_binutils_pass2()
 {
     mkdir -p ${builddir}
     cd ${builddir}
@@ -189,7 +189,7 @@ configure()
         --disable-werror
 }
 
-post_package()
+post_package_binutils_pass2()
 {
     make -C ${builddir}/ld clean
     make -C ${builddir}/ld LIB_PATH=/usr/lib:/lib
@@ -198,10 +198,10 @@ post_package()
 }
 
 unpack
-configure
+configure_binutils_pass2
 compile
 package
-post_package
+post_package_binutils_pass2
 install
 clean
 
@@ -211,7 +211,7 @@ src_archive=sources/gcc-5.2.0.tar.bz2
 source ${bindir}/build.sh
 dist_archive=gcc-5.2.0-pass-2.tar.xz
 
-post_unpack()
+post_unpack_gcc_pass2()
 {
     tar -C ${srcdir} -xf ${sourcesdir}/mpfr-3.1.3.tar.xz
     mv ${srcdir}/mpfr-3.1.3 ${srcdir}/mpfr
@@ -221,7 +221,7 @@ post_unpack()
     mv ${srcdir}/mpc-1.0.3 ${srcdir}/mpc
 }
 
-pre_configure()
+pre_configure_gcc_pass2()
 {
     cd ${srcdir}
 
@@ -241,7 +241,7 @@ pre_configure()
     done
 }
 
-configure()
+configure_gcc_pass2()
 {
     mkdir -p ${builddir}
     cd ${builddir}
@@ -260,7 +260,7 @@ configure()
         --disable-libgomp
 }
 
-post_build()
+post_build_gcc_pass2()
 {
     echo 'int main(){}' > dummy.c
     gcc dummy.c
@@ -269,14 +269,14 @@ post_build()
 }
 
 unpack
-post_unpack
-pre_configure
-configure
+post_unpack_gcc_pass2
+pre_configure_gcc_pass2
+configure_gcc_pass2
 compile
 package
 install
 clean
-post_build
+post_build_gcc_pass2
 
 # Section 5.11. Tcl-core-8.6.4 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/tcl.html
 
@@ -284,12 +284,12 @@ src_archive=sources/tcl-core8.6.4-src.tar.gz
 source ${bindir}/build.sh
 dist_archive=tcl-core-8.6.4.tar.xz
 
-test_build()
+test_build_tcl_core()
 {
     TC=UTC make -C ${builddir} test
 }
 
-pre_package()
+pre_package_tcl_core()
 {
     make -C ${builddir} DESTDIR=${destdir} install-private-headers
     mkdir -p ${destdir}${prefix}/bin
@@ -299,8 +299,8 @@ pre_package()
 unpack
 srcdir=${srcdir}/unix configure
 compile
-test_build
-pre_package
+test_build_tcl_core
+pre_package_tcl_core
 package
 install
 clean
@@ -316,7 +316,7 @@ configure_options="
 --with-tclinclude=${prefix}/include
 "
 
-package()
+package_expect()
 {
     if test $(uname -m) = x86_64 -a ! -L ${destdir}${prefix}/lib64; then
         mkdir -p ${destdir}${prefix}
@@ -332,7 +332,7 @@ unpack
 configure
 compile
 test_build
-package
+package_expect
 install
 clean
 
@@ -370,7 +370,7 @@ src_archive=sources/ncurses-6.0.tar.gz
 source ${bindir}/build.sh
 dist_archive=ncurses-6.0.tar.xz
 
-pre_configure()
+pre_configure_ncurses()
 {
     sed -i s/mawk// ${srcdir}/configure
 }
@@ -383,18 +383,18 @@ configure_options="
 --enable-overwrite
 "
 
-test_build()
+test_build_ncurses()
 {
     make -C ${builddir}/test
 }
 
 unpack
-pre_configure
+pre_configure_ncurses
 configure
 compile
 package
 install
-test_build
+test_build_ncurses
 clean
 
 # Section 5.16. Bash-4.3.30 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/bash.html
@@ -405,7 +405,7 @@ dist_archive=bash-4.3.30.tar.xz
 
 configure_options=--without-bash-malloc
 
-pre_package()
+pre_package_bash()
 {
     mkdir -p ${destdir}${prefix}/bin
     ln -s bash ${destdir}${prefix}/bin/sh
@@ -415,7 +415,7 @@ unpack
 configure
 compile
 test_build tests
-pre_package
+pre_package_bash
 package
 install
 clean
@@ -427,27 +427,27 @@ source ${bindir}/build.sh
 dist_archive=bzip2-1.0.6.tar.xz
 builddir=${srcdir}
 
-pre_package()
+pre_package_bzip2()
 {
     sed -i -e '/ln -s -f/s,\$(PREFIX)/bin/,,' ${srcdir}/Makefile
 }
 
-package()
+package_bzip2()
 {
-	if test $(uname -m) = x86_64 -a ! -L ${destdir}${prefix}/lib64; then
+    if test $(uname -m) = x86_64 -a ! -L ${destdir}${prefix}/lib64; then
         mkdir -p ${destdir}${prefix}
         ln -s lib ${destdir}${prefix}/lib64
     fi
 
-	make -C ${builddir} PREFIX=${destdir}${prefix} install
-	mkdir -p ${distdir}
-	tar -C ${destdir} -caf ${distdir}/${dist_archive} .${prefix}
+    make -C ${builddir} PREFIX=${destdir}${prefix} install
+    mkdir -p ${distdir}
+    tar -C ${destdir} -caf ${distdir}/${dist_archive} .${prefix}
 }
 
 unpack
 compile
-pre_package
-package
+pre_package_bzip2
+package_bzip2
 install
 clean
 
@@ -530,7 +530,7 @@ src_archive=sources/gettext-0.19.5.1.tar.xz
 source ${bindir}/build.sh
 dist_archive=gettext-0.19.5.1.tar.xz
 
-configure()
+configure_gettext()
 {
     mkdir -p ${builddir}/gettext-tools
     cd ${builddir}/gettext-tools
@@ -539,14 +539,14 @@ configure()
         --disable-shared
 }
 
-compile()
+compile_gettext()
 {
     make -C ${builddir}/gettext-tools/gnulib-lib
     make -C ${builddir}/gettext-tools/intl pluralx.c
     make -C ${builddir}/gettext-tools/src msgfmt msgmerge xgettext
 }
 
-package()
+package_gettext()
 {
     mkdir -p ${destdir}${prefix}/bin
     cp ${builddir}/gettext-tools/src/{msgfmt,msgmerge,xgettext} ${destdir}${prefix}/bin
@@ -555,9 +555,9 @@ package()
 }
 
 unpack
-configure
-compile
-package
+configure_gettext
+compile_gettext
+package_gettext
 install
 clean
 
@@ -640,7 +640,7 @@ source ${bindir}/build.sh
 dist_archive=perl-5.22.0.tar.xz
 builddir=${srcdir}
 
-configure()
+configure_perl()
 {
     mkdir -p ${builddir}
     cd ${builddir}
@@ -650,7 +650,7 @@ configure()
         -Dlibs=-lm
 }
 
-package()
+package_perl()
 {
     mkdir -p ${destdir}${prefix}/bin ${destdir}${prefix}/lib/perl5/5.22.0
     cp ${builddir}/perl ${builddir}/cpan/podlators/pod2man ${destdir}${prefix}/bin
@@ -661,9 +661,9 @@ package()
 }
 
 unpack
-configure
+configure_perl
 compile
-package
+package_perl
 install
 clean
 
