@@ -286,7 +286,7 @@ dist_archive=tcl-core-8.6.4.tar.xz
 
 test_build_tcl_core()
 {
-    TC=UTC make -C ${builddir} test
+    TC=UTC ${cmd_skip_test} make -C ${builddir} test
 }
 
 pre_package_tcl_core()
@@ -385,7 +385,7 @@ configure_options="
 
 test_build_ncurses()
 {
-    make -C ${builddir}/test
+    ${cmd_skip_test} make -C ${builddir}/test
 }
 
 unpack

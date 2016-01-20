@@ -12,6 +12,9 @@ dist_archive=$(basename ${src_archive})
 builddir=${workdir}/build
 destdir=${workdir}/dest
 
+# To run tests, comment next line or redefine empty, e.g. cmd_skip_test=
+cmd_skip_test=:
+
 usage()
 {
 	echo "usage: [unpack|configure|compile|package|install|clean]"
@@ -50,7 +53,7 @@ compile()
 
 test_build()
 {
-    make -C ${builddir} ${@:-test}
+    ${cmd_skip_test} make -C ${builddir} ${@:-test}
 }
 
 package()
