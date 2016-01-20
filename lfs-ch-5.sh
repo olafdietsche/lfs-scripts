@@ -1,6 +1,6 @@
 #! /bin/bash
 
-bindir=${HOME}/bin
+bindir=${workdir}/bin
 
 # Section 5.4 Binutils-2.25.1 - Pass 1 http://www.linuxfromscratch.org/lfs/view/stable/chapter05/binutils-pass1.html
 
@@ -8,7 +8,7 @@ src_archive=sources/binutils-2.25.1.tar.bz2
 source ${bindir}/build.sh
 dist_archive=binutils-2.25.1-pass-1.tar.xz
 configure_options="
---with-sysroot=${LFS}
+--with-sysroot=${targetdir}
 --with-lib-path=${prefix}/lib
 --target=${LFS_TGT}
 --disable-nls
@@ -58,7 +58,7 @@ pre_configure_gcc_pass1()
 configure_options="
 --target=${LFS_TGT}
 --with-glibc-version=2.11
---with-sysroot=${LFS}
+--with-sysroot=${targetdir}
 --with-newlib
 --without-headers
 --with-local-prefix=${prefix}
@@ -122,7 +122,7 @@ post_unpack_glibc()
 }
 
 configure_options="
---with-sysroot=${LFS}
+--with-sysroot=${targetdir}
 --with-lib-path=${prefix}/lib
 --target=${LFS_TGT}
 --disable-nls

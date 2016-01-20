@@ -1,14 +1,16 @@
 #! /bin/bash
 
 top=$(readlink -f .)
-prefix=/tools
-sourcesdir=${top}/sources
-srcdir=${top}/src
+targetdir=${targetdir:-${LFS}}
+workdir=${workdir:-${top}}
+prefix=${prefix:-/tools}
+sourcesdir=${workdir}/sources
+srcdir=${workdir}/src
 #src_archive=
-distdir=${top}/dist
+distdir=${workdir}/dist
 dist_archive=$(basename ${src_archive})
-builddir=${top}/build
-destdir=${top}/dest
+builddir=${workdir}/build
+destdir=${workdir}/dest
 
 usage()
 {
@@ -65,11 +67,11 @@ package()
 
 install()
 {
-	tar -C ${LFS} -xf ${distdir}/${dist_archive}
+	tar -C ${targetdir} -xf ${distdir}/${dist_archive}
 }
 
 clean()
 {
-    cd ${top}
+    cd ${workdir}
 	rm -rf ${srcdir} ${builddir} ${destdir}
 }

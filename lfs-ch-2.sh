@@ -6,4 +6,4 @@ LFS=$HOME/target; export LFS
 
 # Section 2.5 http://www.linuxfromscratch.org/lfs/view/stable/chapter02/mounting.html
 
-mkdir -p $LFS
+mkdir -p ${targetdir}
